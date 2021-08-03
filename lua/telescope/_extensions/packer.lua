@@ -68,7 +68,7 @@ local plugins = function(opts)
       actions.select_default:replace(function()
         local selection = actions.get_selected_entry(prompt_bufnr)
         actions.close(prompt_bufnr)
-
+		vim.cmd(string.format(":e %s", selection.readme))
         -- packer[selection.value]()
       end)
 
