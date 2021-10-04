@@ -3,7 +3,7 @@ if not has_packer then
   error("This plugins requires wbthomason/packer.nvim")
 end
 
-require "packer".init{config = {}}
+-- require "packer".init{config = {}}
 
 local MAX_SCAN_LINES = 25
 local ESCAPE_SPECIAL_CHARS = "[%(%)%.%+%-%*%?%[%]%^%$%%]"
