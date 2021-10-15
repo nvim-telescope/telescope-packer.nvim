@@ -8,6 +8,7 @@ local finders = require "telescope.finders"
 local pickers = require "telescope.pickers"
 local sorters = require "telescope.sorters"
 local previewers = require "telescope.previewers"
+local action_state = require "telescope.actions.state"
 
 local entry_display = require('telescope.pickers.entry_display')
 local results = require "telescope._extensions.packer.plugin_list"
@@ -66,7 +67,7 @@ local plugins = function(opts)
     sorter = sorters.get_generic_fuzzy_sorter(),
     attach_mappings = function(prompt_bufnr)
       actions.select_default:replace(function()
-        local selection = actions.get_selected_entry(prompt_bufnr)
+        local selection = action_state.get_selected_entry(prompt_bufnr)
         actions.close(prompt_bufnr)
 		vim.cmd(string.format(":e %s", selection.readme))
         -- packer[selection.value]()

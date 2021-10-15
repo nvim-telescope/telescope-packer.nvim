@@ -84,6 +84,8 @@ local LIST_OF_SHAME = {
 local README_FILE_PATTERN = {
   "/README.md",
   "/README.markdown",
+  "/readme.md",
+  "/Readme.md",
   -- "/doc/" .. plugin_name .. ".txt",
   -- "/doc/" .. plugin_name:gsub("^vim%-", "") .. ".txt",
 }
