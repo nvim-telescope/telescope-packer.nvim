@@ -120,7 +120,7 @@ for _, plugin_subdir in pairs(SUBDIR_NAMES) do
       directory = tostring(plugin_subdir),
       description = plugin_desc,
       readme = plugin_readme,
-	  path = plugin_path
+      path = plugin_path
     })
   end
 end

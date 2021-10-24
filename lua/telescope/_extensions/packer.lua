@@ -52,7 +52,7 @@ local plugins = function(opts)
           name = entry.name,
           description = entry.description,
           readme = entry.readme,
-		  path = entry.path,
+          path = entry.path,
 
           preview_command = function(entry, bufnr)
             local readme = {}
@@ -70,33 +70,33 @@ local plugins = function(opts)
       actions.select_default:replace(function()
         local selection = action_state.get_selected_entry()
         actions.close(prompt_bufnr)
-		vim.cmd(string.format(":e %s", selection.readme))
+        vim.cmd(string.format(":e %s", selection.readme))
       end)
 
       local open_repository = function()
-      	local selection = action_state.get_selected_entry()
-      	actions.close(prompt_bufnr)
-      	vim.cmd(string.format(":silent !git -C %s ls-remote --get-url | xargs open", selection.path))
+        local selection = action_state.get_selected_entry()
+        actions.close(prompt_bufnr)
+        vim.cmd(string.format(":silent !git -C %s ls-remote --get-url | xargs open", selection.path))
       end
 
       local builtin = require("telescope.builtin")
 
       local open_finder = function()
-      	local selection = action_state.get_selected_entry()
-      	actions._close(prompt_bufnr, true)
-      	builtin.find_files({cwd = selection.path})
+        local selection = action_state.get_selected_entry()
+        actions._close(prompt_bufnr, true)
+        builtin.find_files({cwd = selection.path})
       end
 
       local open_browser = function()
-      	local selection = action_state.get_selected_entry()
-      	actions._close(prompt_bufnr, true)
-      	builtin.file_browser({cwd = selection.path})
+        local selection = action_state.get_selected_entry()
+        actions._close(prompt_bufnr, true)
+        builtin.file_browser({cwd = selection.path})
       end
 
       local open_grep = function()
-      	local selection = action_state.get_selected_entry()
-      	actions._close(prompt_bufnr, true)
-      	builtin.live_grep({cwd = selection.path})
+        local selection = action_state.get_selected_entry()
+        actions._close(prompt_bufnr, true)
+        builtin.live_grep({cwd = selection.path})
       end
 
       map("i", "<C-o>", open_repository)
@@ -108,7 +108,6 @@ local plugins = function(opts)
     previewer = previewers.display_content.new(opts),
   }):find()
 end
-
 
 return telescope.register_extension {
   exports = {
