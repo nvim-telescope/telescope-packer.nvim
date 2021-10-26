@@ -4,6 +4,7 @@ local pickers = require "telescope.pickers"
 local sorters = require "telescope.sorters"
 local previewers = require "telescope.previewers"
 local action_state = require "telescope.actions.state"
+local themes = require("telescope.themes")
 
 local entry_display = require "telescope.pickers.entry_display"
 local results = require "telescope._extensions.packer.plugin_list"
@@ -14,9 +15,18 @@ for _, plugin in ipairs(results) do
   plugin_name_width = #plugin.name > plugin_name_width and #plugin.name or plugin_name_width
 end
 
+local user_opts
 local M = {}
+M.setup = function(opts)
+	if opts.theme ~= "" then
+		user_opts = themes["get_" .. opts.theme](opts)
+	else
+		user_opts = opts
+	end
+end
+
 M.packer = function(opts)
-  opts = opts or {}
+  opts = vim.tbl_deep_extend("force", user_opts, opts)
 
   local displayer = entry_display.create {
     separator = "",

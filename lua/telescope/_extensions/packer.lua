@@ -6,6 +6,7 @@ end
 local main = require("telescope._extensions.packer.main")
 
 return telescope.register_extension {
+  setup = main.setup,
   exports = {
     packer = main.packer,
   },

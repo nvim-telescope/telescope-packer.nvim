@@ -13,7 +13,7 @@ Integration for [packer.nvim](https://github.com/wbthomason/packer.nvim) with [t
 
 `:Telescope packer`
 
-For the command to work add this line to your config
+For the command to work this line should be added
 ```lua
 require("telescope").load_extension "packer"
 ```
@@ -32,6 +32,22 @@ require('telescope-packer').packer(opts)
 | `<C-f>`     | Open with find_files                        |
 | `<C-b>`     | Open with file_browser                      |
 | `<C-g>`     | Open with live_grep                         |
+
+## Configure plugin
+
+Default settings can be set
+```lua
+telescope.setup {
+	extensions = {
+		packer = {
+			theme = "ivy",
+			layout_config = {
+				height = .5
+			}
+		}
+	}
+}
+```
 
 ## Actions
 
