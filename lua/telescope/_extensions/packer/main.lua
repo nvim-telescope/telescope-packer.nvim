@@ -18,6 +18,7 @@ end
 local user_opts
 local M = {}
 M.setup = function(opts)
+  opts = opts or {}
   if opts.theme ~= "" then
     user_opts = themes["get_" .. opts.theme](opts)
   else
@@ -26,6 +27,7 @@ M.setup = function(opts)
 end
 
 M.packer = function(opts)
+  opts = opts or {}
   opts = vim.tbl_deep_extend("force", user_opts, opts)
 
   local displayer = entry_display.create {
