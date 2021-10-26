@@ -18,11 +18,11 @@ end
 local user_opts
 local M = {}
 M.setup = function(opts)
-	if opts.theme ~= "" then
-		user_opts = themes["get_" .. opts.theme](opts)
-	else
-		user_opts = opts
-	end
+  if opts.theme ~= "" then
+    user_opts = themes["get_" .. opts.theme](opts)
+  else
+    user_opts = opts
+  end
 end
 
 M.packer = function(opts)
