@@ -13,6 +13,11 @@ Integration for [packer.nvim](https://github.com/wbthomason/packer.nvim) with [t
 
 `:Telescope packer`
 
+For the command to work add this line to your config
+```lua
+require("telescope").load_extension "packer"
+```
+
 ## Available functions
 
 ```lua
