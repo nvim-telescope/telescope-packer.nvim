@@ -81,10 +81,25 @@ M.packer = function(opts)
         vim.cmd(string.format(":e %s", selection.readme))
       end)
 
-      local open_repository = function()
+      local Job = require "plenary.job"
+      local open_online = function()
         local selection = action_state.get_selected_entry()
-        actions.close(prompt_bufnr)
-        vim.cmd(string.format(":silent !git -C %s ls-remote --get-url | xargs open", selection.path))
+
+        local cmd = vim.fn.has "win-32" == 1 and "start" or vim.fn.has "mac" == 1 and "open" or "xdg-open"
+
+        local function open_url(j)
+          Job:new({
+            command = cmd,
+            args = {j:result()[1]}
+          }):start()
+        end
+
+        Job:new({
+          command = "git",
+          args = {"-C", ".", "ls-remote", "--get-url"},
+          cwd = selection.path,
+          on_exit = open_url
+        }):start()
       end
 
       local builtin = require("telescope.builtin")
@@ -107,7 +122,7 @@ M.packer = function(opts)
         builtin.live_grep({cwd = selection.path})
       end
 
-      map("i", "<C-o>", open_repository)
+      map("i", "<C-o>", open_online + actions.close)
       map("i", "<C-f>", open_finder)
       map("i", "<C-b>", open_browser)
       map("i", "<C-g>", open_grep)
