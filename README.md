@@ -26,12 +26,12 @@ require('telescope-packer').packer(opts)
 
 ## Available mappings
 
-| Mappings    | Action                                      |
-|-------------|---------------------------------------------|
-| `<C-o>`     | Open with online repository                 |
-| `<C-f>`     | Open with find_files                        |
-| `<C-b>`     | Open with file_browser                      |
-| `<C-g>`     | Open with live_grep                         |
+| Mappings    | Action                      |
+|-------------|-----------------------------|
+| `<C-o>`     | Open online repository      |
+| `<C-f>`     | Open with find_files        |
+| `<C-b>`     | Open with file_browser      |
+| `<C-g>`     | Open with live_grep         |
 
 ## Configure plugin
 
