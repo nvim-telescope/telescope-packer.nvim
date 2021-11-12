@@ -84,6 +84,7 @@ M.packer = function(opts)
       local Job = require "plenary.job"
       local open_online = function()
         local selection = action_state.get_selected_entry()
+		actions._close(prompt_bufnr, true)
 
         local cmd = vim.fn.has "win-32" == 1 and "start" or vim.fn.has "mac" == 1 and "open" or "xdg-open"
 
@@ -122,7 +123,7 @@ M.packer = function(opts)
         builtin.live_grep({cwd = selection.path})
       end
 
-      map("i", "<C-o>", open_online + actions.close)
+      map("i", "<C-o>", open_online)
       map("i", "<C-f>", open_finder)
       map("i", "<C-b>", open_browser)
       map("i", "<C-g>", open_grep)
