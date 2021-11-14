@@ -21,7 +21,7 @@ require("telescope").load_extension "packer"
 ## Available functions
 
 ```lua
-require('telescope-packer').packer(opts)
+require('telescope').extensions.packer.plugins(opts)
 ```
 
 ## Available mappings
