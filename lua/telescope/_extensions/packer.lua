@@ -104,6 +104,7 @@ local plugins = function(opts)
           cwd = selection.path,
           on_exit = open_url
         }):start()
+		vim.cmd ":stopinsert"
       end
 
       local builtin = require("telescope.builtin")
