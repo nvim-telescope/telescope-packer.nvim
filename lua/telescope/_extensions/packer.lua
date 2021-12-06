@@ -9,7 +9,7 @@ local pickers = require "telescope.pickers"
 local sorters = require "telescope.sorters"
 local previewers = require "telescope.previewers"
 local action_state = require "telescope.actions.state"
-local themes = require("telescope.themes")
+local themes = require "telescope.themes"
 
 local entry_display = require "telescope.pickers.entry_display"
 local results = require "telescope._extensions.packer.plugin_list"
@@ -87,24 +87,11 @@ local plugins = function(opts)
       local Job = require "plenary.job"
       local open_online = function()
         local selection = action_state.get_selected_entry()
-		actions._close(prompt_bufnr, true)
+        actions._close(prompt_bufnr)
 
         local cmd = vim.fn.has "win-32" == 1 and "start" or vim.fn.has "mac" == 1 and "open" or "xdg-open"
-
-        local function open_url(j)
-          Job:new({
-            command = cmd,
-            args = {j:result()[1]}
-          }):start()
-        end
-
-        Job:new({
-          command = "git",
-          args = {"-C", ".", "ls-remote", "--get-url"},
-          cwd = selection.path,
-          on_exit = open_url
-        }):start()
-		vim.cmd ":stopinsert"
+        local url = vim.fn.system(string.format("git -C %s ls-remote --get-url", selection.path))
+        Job:new({command = cmd, args = {url}}):start()
       end
 
       local builtin = require("telescope.builtin")
