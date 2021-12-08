@@ -9,8 +9,9 @@ local pickers = require "telescope.pickers"
 local sorters = require "telescope.sorters"
 local previewers = require "telescope.previewers"
 local action_state = require "telescope.actions.state"
+local themes = require "telescope.themes"
 
-local entry_display = require('telescope.pickers.entry_display')
+local entry_display = require "telescope.pickers.entry_display"
 local results = require "telescope._extensions.packer.plugin_list"
 
 -- set column width to length of longest entry
@@ -19,8 +20,18 @@ for _, plugin in ipairs(results) do
   plugin_name_width = #plugin.name > plugin_name_width and #plugin.name or plugin_name_width
 end
 
-local plugins = function(opts)
+local user_opts
+local setup = function(opts)
   opts = opts or {}
+  if opts.theme ~= "" then
+    user_opts = themes["get_" .. opts.theme](opts)
+  else
+    user_opts = opts
+  end
+end
+
+local plugins = function(opts)
+  opts = vim.tbl_deep_extend("force", user_opts, opts or {})
 
   local displayer = entry_display.create {
     separator = "",
@@ -52,6 +63,7 @@ local plugins = function(opts)
           name = entry.name,
           description = entry.description,
           readme = entry.readme,
+          path = entry.path,
 
           preview_command = function(entry, bufnr)
             local readme = {}
@@ -65,23 +77,56 @@ local plugins = function(opts)
       end,
     },
     sorter = sorters.get_generic_fuzzy_sorter(),
-    attach_mappings = function(prompt_bufnr)
+    attach_mappings = function(prompt_bufnr, map)
       actions.select_default:replace(function()
-        local selection = action_state.get_selected_entry(prompt_bufnr)
+        local selection = action_state.get_selected_entry()
         actions.close(prompt_bufnr)
-		vim.cmd(string.format(":e %s", selection.readme))
-        -- packer[selection.value]()
+        vim.cmd(string.format(":e %s", selection.readme))
       end)
 
+      local Job = require "plenary.job"
+      local open_online = function()
+        local selection = action_state.get_selected_entry()
+        actions._close(prompt_bufnr)
+
+        local cmd = vim.fn.has "win-32" == 1 and "start" or vim.fn.has "mac" == 1 and "open" or "xdg-open"
+        local url = vim.fn.system(string.format("git -C %s ls-remote --get-url", selection.path))
+        Job:new({command = cmd, args = {url}}):start()
+      end
+
+      local builtin = require("telescope.builtin")
+
+      local open_finder = function()
+        local selection = action_state.get_selected_entry()
+        actions._close(prompt_bufnr, true)
+        builtin.find_files({cwd = selection.path})
+      end
+
+      local open_browser = function()
+        local selection = action_state.get_selected_entry()
+        actions._close(prompt_bufnr, true)
+        builtin.file_browser({cwd = selection.path})
+      end
+
+      local open_grep = function()
+        local selection = action_state.get_selected_entry()
+        actions._close(prompt_bufnr, true)
+        builtin.live_grep({cwd = selection.path})
+      end
+
+      map("i", "<C-o>", open_online)
+      map("i", "<C-f>", open_finder)
+      map("i", "<C-b>", open_browser)
+      map("i", "<C-g>", open_grep)
       return true
     end,
     previewer = previewers.display_content.new(opts),
   }):find()
 end
 
-
 return telescope.register_extension {
+  setup = setup,
   exports = {
-    plugins = plugins,
+    packer = plugins,
   },
 }
