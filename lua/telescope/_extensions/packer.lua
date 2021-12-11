@@ -23,7 +23,7 @@ end
 local user_opts
 local setup = function(opts)
   opts = opts or {}
-  if opts.theme ~= "" then
+  if opts.theme and opts.theme ~= "" then
     user_opts = themes["get_" .. opts.theme](opts)
   else
     user_opts = opts
