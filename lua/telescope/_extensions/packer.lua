@@ -91,6 +91,8 @@ local plugins = function(opts)
 
         local cmd = vim.fn.has "win-32" == 1 and "start" or vim.fn.has "mac" == 1 and "open" or "xdg-open"
         local url = vim.fn.system(string.format("git -C %s ls-remote --get-url", selection.path))
+ 				-- Trim newline character at the end of the URL
+        url = string.gsub(url, "\n", "")
         Job:new({command = cmd, args = {url}}):start()
       end
 
