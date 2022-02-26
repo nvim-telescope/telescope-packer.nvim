@@ -106,7 +106,10 @@ local plugins = function(opts)
         local selection = action_state.get_selected_entry()
         actions._close(prompt_bufnr, true)
         local file_browser = require("telescope").extensions.file_browser
-        if not file_browser then return end
+        if not file_browser then
+          vim.notify("telescope-file-browser is required to use this action", vim.log.levels.WARN, { title = "Telescope" })
+          return
+        end
         file_browser.file_browser({cwd = selection.path})
       end
 
