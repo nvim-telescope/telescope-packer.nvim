@@ -105,7 +105,9 @@ local plugins = function(opts)
       local open_browser = function()
         local selection = action_state.get_selected_entry()
         actions._close(prompt_bufnr, true)
-        builtin.file_browser({cwd = selection.path})
+        local file_browser = require("telescope").extensions.file_browser
+        if not file_browser then return end
+        file_browser.file_browser({cwd = selection.path})
       end
 
       local open_grep = function()
