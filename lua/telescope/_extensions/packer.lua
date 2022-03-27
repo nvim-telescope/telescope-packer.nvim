@@ -99,7 +99,9 @@ local plugins = function(opts)
       local open_finder = function()
         local selection = action_state.get_selected_entry()
         actions._close(prompt_bufnr, true)
-        builtin.find_files({cwd = selection.path})
+        vim.schedule(function()
+          builtin.find_files({cwd = selection.path})
+        end)
       end
 
       local open_browser = function()
@@ -110,13 +112,17 @@ local plugins = function(opts)
           vim.notify("telescope-file-browser is required to use this action", vim.log.levels.WARN, { title = "Telescope" })
           return
         end
-        file_browser.file_browser({cwd = selection.path})
+        vim.schedule(function()
+          file_browser.exports.file_browser({ cwd = selection.path })
+        end)
       end
 
       local open_grep = function()
         local selection = action_state.get_selected_entry()
         actions._close(prompt_bufnr, true)
-        builtin.live_grep({cwd = selection.path})
+        vim.schedule(function()
+          builtin.live_grep({cwd = selection.path})
+        end)
       end
 
       map("i", "<C-o>", open_online)
