@@ -82,13 +82,15 @@ local LIST_OF_SHAME = {
 
 -- lowest takes precedence: favors /doc/*.txt over readme.md
 local README_FILE_PATTERN = {
-  "/README.md",
-  "/README.markdown",
-  "/readme.md",
-  "/Readme.md",
   -- "/doc/" .. plugin_name .. ".txt",
   -- "/doc/" .. plugin_name:gsub("^vim%-", "") .. ".txt",
 }
+
+for _, ext in ipairs({"md", "markdown", "adoc", "txt", "org", "neorg"}) do
+  for _, readme in ipairs({"README", "readme", "Readme"}) do
+    table.insert(README_FILE_PATTERN, readme .. "." .. ext)
+  end
+end
 
 local plugin_metadata = {}
 local packer_lists = {}
@@ -105,8 +107,8 @@ for _, plugin_subdir in pairs(SUBDIR_NAMES) do
     -- TODO: get github author/project name here
     plugin_name = vim.fn.fnamemodify(plugin_path, ":t:r")
     plugin_readme = nil
-    for _, extension in pairs(README_FILE_PATTERN) do
-      file_path = plugin_path .. extension
+    for _, pattern in pairs(README_FILE_PATTERN) do
+      file_path = plugin_path .. "/" .. pattern
       file_found = io.open(file_path)
       if file_found then
         io.close(file_found)
