@@ -8,6 +8,7 @@ Integration for [packer.nvim](https://github.com/wbthomason/packer.nvim) with [t
 
 - [packer.nvim](https://github.com/wbthomason/packer.nvim) (required)
 - [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) (required)
+- [telescope-file-browser.nvim](https://github.com/nvim-telescope/telescope-file-browser.nvim) (optional, only for `file_browser` action)
 
 ## Available commands
 
