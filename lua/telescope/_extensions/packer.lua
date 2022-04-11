@@ -105,13 +105,13 @@ local plugins = function(opts)
       end
 
       local open_browser = function()
-        local selection = action_state.get_selected_entry()
-        actions._close(prompt_bufnr, true)
-        local file_browser = require("telescope").extensions.file_browser
-        if not file_browser then
-          vim.notify("telescope-file-browser is required to use this action", vim.log.levels.WARN, { title = "Telescope" })
+        local ok, file_browser = pcall(require, "telescope._extensions.file_browser")
+        if not ok then
+          vim.notify("nvim-telescope/telescope-file-browser.nvim is required to use this action", vim.log.levels.ERROR, { title = "Telescope" })
           return
         end
+        local selection = action_state.get_selected_entry()
+        actions._close(prompt_bufnr, true)
         vim.schedule(function()
           file_browser.exports.file_browser({ cwd = selection.path })
         end)
