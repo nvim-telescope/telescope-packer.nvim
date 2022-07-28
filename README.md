@@ -29,10 +29,10 @@ require('telescope').extensions.packer.packer(opts)
 
 | Mappings    | Action                      |
 |-------------|-----------------------------|
-| `<C-o>`     | Open online repository      |
-| `<C-f>`     | Open with find_files        |
-| `<C-b>`     | Open with file_browser      |
-| `<C-g>`     | Open with live_grep         |
+| `<C-o>/o`     | Open online repository      |
+| `<C-f>/f`     | Open with find_files        |
+| `<C-b>/b`     | Open with file_browser      |
+| `<C-g>/g`     | Open with live_grep         |
 
 ## Configure plugin
 

@@ -120,9 +120,17 @@ local plugins = function(opts)
       end
 
       map("i", "<C-o>", open_online)
+      map("n", "<C-o>", open_online)
+      map("n", "o", open_online)
       map("i", "<C-f>", open_finder)
+      map("n", "<C-f>", open_finder)
+      map("n", "f", open_finder)
       map("i", "<C-b>", open_browser)
+      map("n", "<C-b>", open_browser)
+      map("n", "b", open_browser)
       map("i", "<C-g>", open_grep)
+      map("n", "<C-g>", open_grep)
+      map("n", "g", open_grep)
       return true
     end,
     previewer = previewers.display_content.new(opts),
