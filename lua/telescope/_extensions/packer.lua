@@ -119,10 +119,18 @@ local plugins = function(opts)
         builtin.live_grep({cwd = selection.path})
       end
 
+      local set_current_dir = function()
+        local selection = action_state.get_selected_entry()
+        actions._close(prompt_bufnr)
+
+        vim.api.nvim_set_current_dir(selection.path)
+      end
+
       map("i", "<C-o>", open_online)
       map("i", "<C-f>", open_finder)
       map("i", "<C-b>", open_browser)
       map("i", "<C-g>", open_grep)
+      map("i", "<C-d>", set_current_dir)
       return true
     end,
     previewer = previewers.display_content.new(opts),
