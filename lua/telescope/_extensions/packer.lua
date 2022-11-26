@@ -30,6 +30,21 @@ local setup = function(opts)
   end
 end
 
+local function opener()
+  local sysname = vim.loop.os_uname().sysname
+  if sysname == "Darwin" then
+    return 'open'
+  elseif sysname == "Windows" then
+    return "explorer"
+  elseif vim.fn.executable("wslview") then
+    return 'wslview'
+  elseif vim.fn.executable("xdg-open") then
+    return 'xdg-open'
+  else
+    return nil
+  end
+end
+
 local plugins = function(opts)
   opts = vim.tbl_deep_extend("force", user_opts, opts or {})
 
@@ -89,7 +104,11 @@ local plugins = function(opts)
         local selection = action_state.get_selected_entry()
         actions._close(prompt_bufnr)
 
-        local cmd = vim.fn.has "win32" == 1 and "explorer" or vim.fn.has "mac" == 1 and "open" or "xdg-open"
+        local cmd = opener()
+        if cmd == nil then
+          vim.notify("No executables to open file/url", vim.log.levels.ERROR)
+          return
+        end
         local url = vim.fn.trim(vim.fn.system(string.format("git -C %s ls-remote --get-url", selection.path)))
         Job:new({command = cmd, args = {url}}):start()
       end
