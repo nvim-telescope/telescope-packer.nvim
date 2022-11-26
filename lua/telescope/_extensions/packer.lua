@@ -45,6 +45,14 @@ local function opener()
   end
 end
 
+local function get_url(path)
+  local url = vim.fn.trim(vim.fn.system(string.format("git -C %s ls-remote --get-url", path)))
+  if string.sub(url, 1, 6) == 'ssh://' then
+    url, _ = string.gsub(url, [[^ssh://[^/]+/]], 'https://github.com/')
+  end
+  return url
+end
+
 local plugins = function(opts)
   opts = vim.tbl_deep_extend("force", user_opts, opts or {})
 
@@ -109,7 +117,7 @@ local plugins = function(opts)
           vim.notify("No executables to open file/url", vim.log.levels.ERROR)
           return
         end
-        local url = vim.fn.trim(vim.fn.system(string.format("git -C %s ls-remote --get-url", selection.path)))
+        local url = get_url(selection.path)
         Job:new({command = cmd, args = {url}}):start()
       end
 
