@@ -48,7 +48,8 @@ end
 local function get_url(path)
   local url = vim.fn.trim(vim.fn.system(string.format("git -C %s ls-remote --get-url", path)))
   if string.sub(url, 1, 6) == 'ssh://' then
-    url, _ = string.gsub(url, '^ssh://(%w+@)?([0-9a-fA-F%.%-]+)/', 'https://%2/')
+    url, _ = string.gsub(url, '^ssh://%w+@', 'https://')
+    url, _ = string.gsub(url, '^ssh://', 'https://')
   end
   return url
 end
